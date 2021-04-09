@@ -1,0 +1,135 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: transmission
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: transmission-envs
+  namespace: transmission
+data:
+  PGID: '100'
+  PUID: '1003'
+  TZ: 'Europe/Paris'
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmission-app
+  namespace: transmission
+  labels:
+    app.kubernetes.io/name: transmission
+    app.kubernetes.io/instance: transmission
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: transmission
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: transmission
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: transmission-app
+          image: linuxserver/transmission
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9091
+            failureThreshold: 5
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9091
+            failureThreshold: 5
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 10
+          ports:
+            - containerPort: 9091
+              hostPort: 9091
+            - containerPort: 51413
+              hostPort: 51413
+            - containerPort: 51413
+              hostPort: 51413
+              protocol: UDP
+          envFrom:
+            - configMapRef:
+                name: transmission-envs
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+            - mountPath: /downloads
+              name: download-volume
+      volumes:
+        - name: config-volume
+          hostPath:
+            # Ensure the file directory is created.
+            path: /mnt/ssd/containers/opt/transmission/config
+            type: DirectoryOrCreate
+        - name: download-volume
+          hostPath:
+            # Ensure the file directory is created.
+            path: /mnt/tank/shares/downloads
+            type: DirectoryOrCreate
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission-app
+  namespace: transmission
+  labels:
+    app.kubernetes.io/name: transmission
+spec:
+  type: ClusterIP
+  ports:
+    - name: transmission
+      port: 9091
+      protocol: TCP
+      targetPort: 9091
+    - name: bt
+      port: 51413
+      protocol: TCP
+      targetPort: 51413
+    - name: bt-udp
+      port: 51413
+      protocol: UDP
+      targetPort: 51413
+  selector:
+    app.kubernetes.io/name: transmission
+
+---
+
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: transmission-app
+  namespace: transmission
+  labels:
+    app.kubernetes.io/name: transmission
+    app.kubernetes.io/instance: transmission
+subsets:
+  - addresses:
+      - ip: "192.168.1.25"
+    ports:
+      - name: transmission
+        port: 9091
+      - name: bt
+        port: 51413
+      - name: bt-udp
+        port: 51413
+        protocol: UDP
