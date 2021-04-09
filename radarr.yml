@@ -11,8 +11,8 @@ metadata:
   name: radarr-envs
   namespace: radarr
 data:
-  PGID: '1004'
-  PUID: '100'
+  PGID: '100'
+  PUID: '1004'
   TZ: 'Europe/Paris'
 
 ---

@@ -11,8 +11,8 @@ metadata:
   name: sonarr-envs
   namespace: sonarr
 data:
-  PGID: '1005'
-  PUID: '100'
+  PGID: '100'
+  PUID: '1005'
   TZ: 'Europe/Paris'
 
 ---
