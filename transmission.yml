@@ -82,7 +82,7 @@ spec:
         - name: download-volume
           hostPath:
             # Ensure the file directory is created.
-            path: /mnt/tank/shares/downloads
+            path: /mnt/tank/shares/download
             type: DirectoryOrCreate
 
 ---
