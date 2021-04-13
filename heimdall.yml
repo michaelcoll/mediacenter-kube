@@ -59,7 +59,7 @@ spec:
             timeoutSeconds: 10
           ports:
             - containerPort: 80
-              hostPort: 8080
+              hostPort: 80
           envFrom:
             - configMapRef:
                 name: heimdall-envs
@@ -93,7 +93,7 @@ spec:
   type: ClusterIP
   ports:
     - name: heimdall
-      port: 8080
+      port: 80
       protocol: TCP
       targetPort: 8080
   selector:
