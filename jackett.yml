@@ -41,22 +41,6 @@ spec:
         - name: jackett-app
           image: linuxserver/jackett
           imagePullPolicy: Always
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 9117
-            failureThreshold: 5
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 9117
-            failureThreshold: 5
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 10
           ports:
             - containerPort: 9117
               hostPort: 9117
