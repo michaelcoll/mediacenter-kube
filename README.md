@@ -2,7 +2,7 @@
 
 | App  | Port  |
 |---|---|
-| Heimdall  | 8080  |
+| Heimdall  | 8180  |
 | Jackett  | 9117  |
 | MineOS  | 8443, 25565 (TCP/UDP)  |
 | Radarr  | 7878  |

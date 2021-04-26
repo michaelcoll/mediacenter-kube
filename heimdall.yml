@@ -44,7 +44,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 8180
             failureThreshold: 5
             initialDelaySeconds: 60
             periodSeconds: 10
@@ -52,14 +52,14 @@ spec:
           readinessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 8180
             failureThreshold: 5
             initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 10
           ports:
-            - containerPort: 8080
-              hostPort: 8080
+            - containerPort: 8180
+              hostPort: 8180
           envFrom:
             - configMapRef:
                 name: heimdall-envs
@@ -93,9 +93,9 @@ spec:
   type: ClusterIP
   ports:
     - name: heimdall
-      port: 8080
+      port: 8180
       protocol: TCP
-      targetPort: 8080
+      targetPort: 8180
   selector:
     app.kubernetes.io/name: heimdall
 
@@ -114,4 +114,4 @@ subsets:
       - ip: "192.168.1.25"
     ports:
       - name: heimdall
-        port: 8080
+        port: 8180
