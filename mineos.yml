@@ -106,7 +106,7 @@ subsets:
       - ip: "192.168.1.25"
     ports:
       - name: mineos
-        port: 8989
+        port: 8443
       - name: minecraft
         port: 25565
         protocol: TCP
