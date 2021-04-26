@@ -1,0 +1,143 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: unifi
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unifi-envs
+  namespace: unifi
+data:
+  PGID: '100'
+  PUID: '1008'
+  TZ: 'Europe/Paris'
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-app
+  namespace: unifi
+  labels:
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: unifi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: unifi
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: unifi-app
+          image: linuxserver/unifi-controller
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8443
+            failureThreshold: 5
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8443
+            failureThreshold: 5
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 10
+          ports:
+            - containerPort: 3478
+              hostPort: 3478
+              protocol: UDP
+            - containerPort: 6789
+              hostPort: 6789
+            - containerPort: 8080
+              hostPort: 8080
+            - containerPort: 8443
+              hostPort: 8443
+            - containerPort: 10001
+              hostPort: 10001
+              protocol: UDP
+          envFrom:
+            - configMapRef:
+                name: unifi-envs
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+      volumes:
+        - name: config-volume
+          hostPath:
+            # Ensure the file directory is created.
+            path: /mnt/ssd/containers/opt/unifi/config
+            type: DirectoryOrCreate
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-app
+  namespace: unifi
+  labels:
+    app.kubernetes.io/name: unifi
+spec:
+  type: ClusterIP
+  ports:
+    - name: unifi-stun
+      port: 3478
+      protocol: UDP
+      targetPort: 3478
+    - name: unifi-mobile-test
+      port: 6789
+      targetPort: 6789
+    - name: unifi-devices-comm
+      port: 8080
+      targetPort: 8080
+    - name: unifi
+      port: 8443
+      targetPort: 8443
+    - name: ap-discovery
+      port: 10001
+      protocol: UDP
+      targetPort: 10001
+  selector:
+    app.kubernetes.io/name: unifi
+
+---
+
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: unifi-app
+  namespace: unifi
+  labels:
+    app.kubernetes.io/name: unifi
+    app.kubernetes.io/instance: unifi
+subsets:
+  - addresses:
+      - ip: "192.168.1.25"
+    ports:
+      - name: unifi-stun
+        port: 3478
+        protocol: UDP
+      - name: unifi-mobile-test
+        port: 6789
+      - name: unifi-devices-comm
+        port: 8080
+      - name: unifi
+        port: 8443
+      - name: ap-discovery
+        port: 10001
+        protocol: UDP
