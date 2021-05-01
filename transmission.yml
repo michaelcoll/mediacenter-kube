@@ -77,7 +77,7 @@ spec:
         - name: config-volume
           hostPath:
             # Ensure the file directory is created.
-            path: /mnt/ssd/containers/opt/transmission/config
+            path: /mnt/ssd/containers/config/transmission
             type: DirectoryOrCreate
         - name: download-volume
           hostPath:

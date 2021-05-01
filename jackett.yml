@@ -54,7 +54,7 @@ spec:
         - name: config-volume
           hostPath:
             # Ensure the file directory is created.
-            path: /mnt/ssd/containers/opt/jackett/config
+            path: /mnt/ssd/containers/config/jackett
             type: DirectoryOrCreate
 
 ---

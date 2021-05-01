@@ -74,7 +74,7 @@ spec:
         - name: config-volume
           hostPath:
             # Ensure the file directory is created.
-            path: /mnt/ssd/containers/opt/sonarr/config
+            path: /mnt/ssd/containers/config/sonarr
             type: DirectoryOrCreate
         - name: download-volume
           hostPath:
