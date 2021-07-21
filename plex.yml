@@ -63,7 +63,7 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config-volume
-            - mountPath: /videos
+            - mountPath: /data
               name: videos-volume
       volumes:
         - name: config-volume
