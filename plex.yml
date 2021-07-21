@@ -65,11 +65,18 @@ spec:
               name: config-volume
             - mountPath: /data
               name: videos-volume
+            - mountPath: /transcode
+              name: transcode-volume
       volumes:
         - name: config-volume
           hostPath:
             # Ensure the file directory is created.
             path: /mnt/ssd/containers/config/plex
+            type: DirectoryOrCreate
+        - name: transcode-volume
+          hostPath:
+            # Ensure the file directory is created.
+            path: /mnt/ssd/containers/config/plex/transcode
             type: DirectoryOrCreate
         - name: videos-volume
           hostPath:
