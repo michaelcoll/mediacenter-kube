@@ -40,7 +40,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: plex-app
-          image: linuxserver/plex:amd64-version-1.23.5.4841-549599676
+          image: plexinc/pms-docker
           imagePullPolicy: Always
           ports:
             - containerPort: 32400
