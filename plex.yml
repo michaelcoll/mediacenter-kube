@@ -1,0 +1,141 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: plex
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: plex-envs
+  namespace: plex
+data:
+  PGID: '100'
+  PUID: '1000'
+  VERSION: 'latest'
+  TZ: 'Europe/Paris'
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex-app
+  namespace: plex
+  labels:
+    app.kubernetes.io/name: plex
+    app.kubernetes.io/instance: plex
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: plex
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: plex
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: plex-app
+          image: linuxserver/plex:amd64-latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 32400
+              hostPort: 32400
+            - containerPort: 32410
+              hostPort: 32410
+              protocol: UDP
+            - containerPort: 32412
+              hostPort: 32412
+              protocol: UDP
+            - containerPort: 32413
+              hostPort: 32413
+              protocol: UDP
+            - containerPort: 32414
+              hostPort: 32414
+              protocol: UDP
+          envFrom:
+            - configMapRef:
+                name: plex-envs
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+            - mountPath: /videos
+              name: videos-volume
+      volumes:
+        - name: config-volume
+          hostPath:
+            # Ensure the file directory is created.
+            path: /mnt/ssd/containers/config/plex
+            type: DirectoryOrCreate
+        - name: videos-volume
+          hostPath:
+            # Ensure the file directory is created.
+            path: /mnt/tank/shares/videos
+            type: DirectoryOrCreate
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex-app
+  namespace: plex
+  labels:
+    app.kubernetes.io/name: plex
+spec:
+  type: ClusterIP
+  ports:
+    - name: plex
+      port: 32400
+      targetPort: 32400
+    - name: plex-network-discovery-0
+      port: 32410
+      targetPort: 32410
+      protocol: UDP
+    - name: plex-network-discovery-2
+      port: 32412
+      targetPort: 32412
+      protocol: UDP
+    - name: plex-network-discovery-3
+      port: 32413
+      targetPort: 32413
+      protocol: UDP
+    - name: plex-network-discovery-4
+      port: 32414
+      targetPort: 32414
+      protocol: UDP
+  selector:
+    app.kubernetes.io/name: plex
+
+---
+
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: plex-app
+  namespace: plex
+  labels:
+    app.kubernetes.io/name: plex
+    app.kubernetes.io/instance: plex
+subsets:
+  - addresses:
+      - ip: "192.168.1.25"
+    ports:
+      - name: plex
+        port: 32400
+      - name: plex-network-discovery-0
+        port: 32410
+        protocol: UDP
+      - name: plex-network-discovery-2
+        port: 32412
+        protocol: UDP
+      - name: plex-network-discovery-3
+        port: 32413
+        protocol: UDP
+      - name: plex-network-discovery-4
+        port: 32414
+        protocol: UDP
