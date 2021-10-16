@@ -15,6 +15,7 @@ data:
   PUID: '1000'
   VERSION: 'latest'
   TZ: 'Europe/Paris'
+  PLEX_CLAIM : 'claim-k7XxtdKj_x9o3geL9yAH'
 
 ---
 
