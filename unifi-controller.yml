@@ -13,6 +13,8 @@ metadata:
 data:
   PGID: '100'
   PUID: '1008'
+  MEM_LIMIT: '512M'
+  MEM_STARTUP: '512M'
   TZ: 'Europe/Paris'
 
 ---
@@ -39,7 +41,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: unifi-app
-          image: linuxserver/unifi-controller:version-6.2.26
+          image: linuxserver/unifi-controller:version-6.4.54
           imagePullPolicy: Always
           ports:
             - containerPort: 3478
@@ -60,6 +62,9 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config-volume
+          resources:
+            limits:
+              memory: '768Mi'
       volumes:
         - name: config-volume
           hostPath:
