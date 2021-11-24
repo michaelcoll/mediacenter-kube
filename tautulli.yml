@@ -12,7 +12,7 @@ metadata:
   namespace: tautulli
 data:
   PGID: '100'
-  PUID: '1000'
+  PUID: '1009'
   TZ: 'Europe/Paris'
 
 ---
