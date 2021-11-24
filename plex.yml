@@ -12,7 +12,7 @@ metadata:
   namespace: plex
 data:
   PGID: '100'
-  PUID: '1000'
+  PUID: '1002'
   VERSION: 'latest'
   TZ: 'Europe/Paris'
   PLEX_CLAIM : 'claim-k7XxtdKj_x9o3geL9yAH'
