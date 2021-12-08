@@ -13,8 +13,8 @@ metadata:
 data:
   PGID: '100'
   PUID: '1008'
-  MEM_LIMIT: '512M'
-  MEM_STARTUP: '512M'
+  MEM_LIMIT: '768M'
+  MEM_STARTUP: '768M'
   TZ: 'Europe/Paris'
 
 ---
@@ -32,6 +32,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: unifi
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -64,7 +66,7 @@ spec:
               name: config-volume
           resources:
             limits:
-              memory: '768Mi'
+              memory: '1024Mi'
       volumes:
         - name: config-volume
           hostPath:
