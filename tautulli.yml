@@ -30,6 +30,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: tautulli
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -39,7 +41,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: tautulli-app
-          image: tautulli/tautulli
+          image: tautulli/tautulli:v2.9.4
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
