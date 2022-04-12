@@ -31,6 +31,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: mineos
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -41,7 +43,7 @@ spec:
       terminationGracePeriodSeconds: 600
       containers:
         - name: mineos-app
-          image: hexparrot/mineos
+          image: michaelcoll/mineos
           imagePullPolicy: Always
           ports:
             - containerPort: 8543
