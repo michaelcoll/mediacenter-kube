@@ -41,7 +41,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: tautulli-app
-          image: tautulli/tautulli:v2.9.4
+          image: tautulli/tautulli:v2.10.1
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
