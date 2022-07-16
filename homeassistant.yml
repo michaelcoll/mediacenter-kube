@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: homeassistant
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homeassistant-envs
+  namespace: homeassistant
+data:
+  PGID: "100"
+  PUID: "1011"
+  TZ: "Europe/Paris"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant-app
+  namespace: homeassistant
+  labels:
+    app.kubernetes.io/name: homeassistant
+    app.kubernetes.io/instance: homeassistant
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: homeassistant
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: homeassistant
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: unifi-app
+          image: home-assistant/home-assistant:2022.7
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8123
+              hostPort: 8123
+          envFrom:
+            - configMapRef:
+                name: homeassistant-envs
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+          resources:
+            limits:
+              memory: "1024Mi"
+      volumes:
+        - name: config-volume
+          hostPath:
+            # Ensure the file directory is created.
+            path: /mnt/ssd/containers/config/homeassistant
+            type: DirectoryOrCreate
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant-app
+  namespace: homeassistant
+  labels:
+    app.kubernetes.io/name: homeassistant
+spec:
+  type: ClusterIP
+  ports:
+    - name: homeassistant
+      port: 8123
+      targetPort: 8123
+  selector:
+    app.kubernetes.io/name: homeassistant
+
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: homeassistant-app
+  namespace: homeassistant
+  labels:
+    app.kubernetes.io/name: homeassistant
+    app.kubernetes.io/instance: homeassistant
+subsets:
+  - addresses:
+      - ip: "192.168.1.25"
+    ports:
+      - name: homeassistant
+        port: 8123
