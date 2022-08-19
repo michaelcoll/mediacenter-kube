@@ -4,21 +4,19 @@ metadata:
   name: plex
 
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: plex-envs
   namespace: plex
 data:
-  PGID: '100'
-  PUID: '1002'
-  VERSION: 'latest'
-  TZ: 'Europe/Paris'
-  PLEX_CLAIM : 'claim-k7XxtdKj_x9o3geL9yAH'
+  PGID: "100"
+  PUID: "1002"
+  VERSION: "latest"
+  TZ: "Europe/Paris"
+  PLEX_CLAIM: "claim-k7XxtdKj_x9o3geL9yAH"
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -43,7 +41,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: plex-app
-          image: plexinc/pms-docker:1.27.2.5929-a806c5905
+          image: plexinc/pms-docker:1.28.1.6104-788f82488
           imagePullPolicy: Always
           ports:
             - containerPort: 32400
@@ -88,7 +86,6 @@ spec:
             type: DirectoryOrCreate
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -122,7 +119,6 @@ spec:
     app.kubernetes.io/name: plex
 
 ---
-
 apiVersion: v1
 kind: Endpoints
 metadata:
