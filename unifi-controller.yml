@@ -4,21 +4,19 @@ metadata:
   name: unifi
 
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: unifi-envs
   namespace: unifi
 data:
-  PGID: '100'
-  PUID: '1008'
-  MEM_LIMIT: '768M'
-  MEM_STARTUP: '768M'
-  TZ: 'Europe/Paris'
+  PGID: "100"
+  PUID: "1008"
+  MEM_LIMIT: "768M"
+  MEM_STARTUP: "768M"
+  TZ: "Europe/Paris"
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -43,7 +41,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: unifi-app
-          image: linuxserver/unifi-controller:7.1.66
+          image: linuxserver/unifi-controller:7.2.92
           imagePullPolicy: Always
           ports:
             - containerPort: 3478
@@ -66,7 +64,7 @@ spec:
               name: config-volume
           resources:
             limits:
-              memory: '1024Mi'
+              memory: "1024Mi"
       volumes:
         - name: config-volume
           hostPath:
@@ -75,7 +73,6 @@ spec:
             type: DirectoryOrCreate
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -107,7 +104,6 @@ spec:
     app.kubernetes.io/name: unifi
 
 ---
-
 apiVersion: v1
 kind: Endpoints
 metadata:
