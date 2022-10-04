@@ -4,19 +4,17 @@ metadata:
   name: tautulli
 
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: tautulli-envs
   namespace: tautulli
 data:
-  PGID: '100'
-  PUID: '1009'
-  TZ: 'Europe/Paris'
+  PGID: "100"
+  PUID: "1009"
+  TZ: "Europe/Paris"
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -41,7 +39,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: tautulli-app
-          image: tautulli/tautulli:v2.10.1
+          image: tautulli/tautulli:v2.10.4
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
@@ -76,7 +74,6 @@ spec:
             type: DirectoryOrCreate
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -95,7 +92,6 @@ spec:
     app.kubernetes.io/name: tautulli
 
 ---
-
 apiVersion: v1
 kind: Endpoints
 metadata:
