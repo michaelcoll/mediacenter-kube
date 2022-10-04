@@ -4,19 +4,17 @@ metadata:
   name: heimdall
 
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: heimdall-envs
   namespace: heimdall
 data:
-  PGID: '100'
-  PUID: '1000'
-  TZ: 'Europe/Paris'
+  PGID: "100"
+  PUID: "1000"
+  TZ: "Europe/Paris"
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,6 +28,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: heimdall
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -39,7 +39,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: heimdall-app
-          image: linuxserver/heimdall
+          image: linuxserver/heimdall:v2.4.13-ls188
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
@@ -81,7 +81,6 @@ spec:
             type: DirectoryOrCreate
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -100,7 +99,6 @@ spec:
     app.kubernetes.io/name: heimdall
 
 ---
-
 apiVersion: v1
 kind: Endpoints
 metadata:
