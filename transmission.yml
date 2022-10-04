@@ -4,19 +4,17 @@ metadata:
   name: transmission
 
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: transmission-envs
   namespace: transmission
 data:
-  PGID: '100'
-  PUID: '1003'
-  TZ: 'Europe/Paris'
+  PGID: "100"
+  PUID: "1003"
+  TZ: "Europe/Paris"
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,6 +28,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: transmission
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -39,7 +39,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: transmission-app
-          image: linuxserver/transmission
+          image: linuxserver/transmission:version-3.00-r5
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
@@ -86,7 +86,6 @@ spec:
             type: DirectoryOrCreate
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -113,7 +112,6 @@ spec:
     app.kubernetes.io/name: transmission
 
 ---
-
 apiVersion: v1
 kind: Endpoints
 metadata:
