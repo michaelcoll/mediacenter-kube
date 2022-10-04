@@ -4,19 +4,17 @@ metadata:
   name: radarr
 
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: radarr-envs
   namespace: radarr
 data:
-  PGID: '100'
-  PUID: '1004'
-  TZ: 'Europe/Paris'
+  PGID: "100"
+  PUID: "1004"
+  TZ: "Europe/Paris"
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,6 +28,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: radarr
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -39,7 +39,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: radarr-app
-          image: linuxserver/radarr
+          image: linuxserver/radarr:4.3.0-nightly
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
@@ -88,7 +88,6 @@ spec:
             type: DirectoryOrCreate
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -107,7 +106,6 @@ spec:
     app.kubernetes.io/name: radarr
 
 ---
-
 apiVersion: v1
 kind: Endpoints
 metadata:
