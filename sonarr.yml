@@ -4,19 +4,17 @@ metadata:
   name: sonarr
 
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: sonarr-envs
   namespace: sonarr
 data:
-  PGID: '100'
-  PUID: '1005'
-  TZ: 'Europe/Paris'
+  PGID: "100"
+  PUID: "1005"
+  TZ: "Europe/Paris"
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,6 +28,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: sonarr
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -39,7 +39,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: sonarr-app
-          image: linuxserver/sonarr
+          image: linuxserver/sonarr:3.0.9
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
@@ -88,7 +88,6 @@ spec:
             type: DirectoryOrCreate
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -107,7 +106,6 @@ spec:
     app.kubernetes.io/name: sonarr
 
 ---
-
 apiVersion: v1
 kind: Endpoints
 metadata:
