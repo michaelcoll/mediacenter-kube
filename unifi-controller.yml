@@ -41,7 +41,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: unifi-app
-          image: linuxserver/unifi-controller:7.2.92
+          image: linuxserver/unifi-controller:7.2.94
           imagePullPolicy: Always
           ports:
             - containerPort: 3478
