@@ -39,7 +39,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: homeassistant
-          image: homeassistant/home-assistant:2022.7
+          image: homeassistant/home-assistant:2022.11
           imagePullPolicy: Always
           ports:
             - containerPort: 8123
