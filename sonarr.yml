@@ -39,7 +39,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: sonarr-app
-          image: linuxserver/sonarr:3.0.9
+          image: linuxserver/sonarr:3.0.9.1549-ls172
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
