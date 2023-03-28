@@ -39,7 +39,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: heimdall-app
-          image: linuxserver/heimdall:v2.4.13-ls188
+          image: linuxserver/heimdall:latest
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
