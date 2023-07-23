@@ -41,7 +41,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: plex-app
-          image: plexinc/pms-docker:1.32.0.6973-a787c5a8e
+          image: plexinc/pms-docker:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 32400
@@ -82,7 +82,7 @@ spec:
         - name: videos-volume
           hostPath:
             # Ensure the file directory is created.
-            path: /mnt/tank/shares/videos
+            path: /mnt/tank2/shares/videos
             type: DirectoryOrCreate
 
 ---

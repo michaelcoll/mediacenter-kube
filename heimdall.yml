@@ -66,18 +66,11 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config-volume
-            - mountPath: /downloads
-              name: download-volume
       volumes:
         - name: config-volume
           hostPath:
             # Ensure the file directory is created.
             path: /mnt/ssd/containers/config/heimdall
-            type: DirectoryOrCreate
-        - name: download-volume
-          hostPath:
-            # Ensure the file directory is created.
-            path: /mnt/tank/shares/download
             type: DirectoryOrCreate
 
 ---
