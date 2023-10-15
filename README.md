@@ -15,19 +15,23 @@
 | Tautulli         | 1009 |
 | Prowlarr         | 1010 |
 | Home Assistant   | 1011 |
+| Oveseerr         | 1012 |
+| Homarr           | 1012 |
 
 ## The port used by each app installed
 
 | Port  | App                         |
 | ----- | --------------------------- |
 | 3478  | Unifi Controller (TCP, UDP) |
+| 5055  | Overseerr                   |
 | 6789  | Unifi Controller            |
+| 7575  | Homarr                      |
+| 7878  | Radarr                      |
 | 8080  | Unifi Controller            |
 | 8123  | Home Assistant              |
 | 8180  | Heimdall                    |
-| 8443  | Unifi Controller            |
-| 7878  | Radarr                      |
 | 8181  | Tautulli                    |
+| 8443  | Unifi Controller            |
 | 8543  | MineOS                      |
 | 8989  | Sonarr                      |
 | 9091  | Transmission                |
