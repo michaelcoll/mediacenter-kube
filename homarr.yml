@@ -64,18 +64,20 @@ spec:
             - configMapRef:
                 name: homarr-envs
           volumeMounts:
-            - mountPath: /config
+            - mountPath: /app/data/configs
               name: config-volume
+            - mountPath: /data
+              name: data-volume
       volumes:
         - name: config-volume
           hostPath:
             # Ensure the file directory is created.
-            path: /mnt/ssd/containers/config/homarr
+            path: /mnt/ssd/containers/config/homarr/configs
             type: DirectoryOrCreate
-        - name: download-volume
+        - name: data-volume
           hostPath:
             # Ensure the file directory is created.
-            path: /mnt/tank/shares/download
+            path: /mnt/ssd/containers/config/homarr/data
             type: DirectoryOrCreate
 
 ---
