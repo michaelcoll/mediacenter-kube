@@ -70,6 +70,8 @@ spec:
               name: download-volume
             - mountPath: /tv
               name: tv-volume
+            - mountPath: /anime
+              name: anime-volume
       volumes:
         - name: config-volume
           hostPath:
@@ -85,6 +87,11 @@ spec:
           hostPath:
             # Ensure the file directory is created.
             path: /mnt/tank2/shares/videos/Séries
+            type: DirectoryOrCreate
+        - name: anime-volume
+          hostPath:
+            # Ensure the file directory is created.
+            path: /mnt/tank2/shares/videos/Anime
             type: DirectoryOrCreate
 
 ---
